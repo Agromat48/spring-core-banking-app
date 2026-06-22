@@ -21,7 +21,7 @@ public class CreateAccountProcessor implements OperationCommandProcessor {
     }
 
     @Override
-    public void processOperation() throws IllegalAccessException {
+    public void processOperation() {
         System.out.print("Enter the user id for which to create an account: ");
         int userId = Integer.parseInt(sc.nextLine());
         User user = userService.findUserById(userId).orElseThrow(() -> new IllegalArgumentException(

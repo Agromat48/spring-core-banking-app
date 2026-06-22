@@ -15,7 +15,7 @@ public class ShowAllUsersProcessor implements OperationCommandProcessor {
     }
 
     @Override
-    public void processOperation() throws IllegalAccessException {
+    public void processOperation() {
         List<User> users = userService.getAllUsers();
         System.out.println("List of all users: ");
         users.forEach(System.out::println);

@@ -3,9 +3,6 @@ package org.example;
 import org.example.account.AccountService;
 import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
-import org.example.operations.processors.CreateAccountProcessor;
-import org.example.operations.processors.CreateUserProcessor;
-import org.example.operations.processors.ShowAllUsersProcessor;
 import org.example.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,11 +28,9 @@ public class ApplicationConfiguration {
         Map<ConsoleOperationType, OperationCommandProcessor> processorMap =
                 commandProcessorList
                         .stream()
-                        .collect(
-                                Collectors.toMap(
+                        .collect(Collectors.toMap(
                                         OperationCommandProcessor::getOperationType,
-                                        processor -> processor
-                        ));
+                                        processor -> processor));
 
         return new OperationsConsoleListener(scanner, processorMap);
     }

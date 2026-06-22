@@ -26,6 +26,8 @@ public class OperationsConsoleListener {
 
     private ConsoleOperationType listenNextOperation() {
         System.out.println("Please type next operation:");
+        printAllAvailableOperations();
+
         while(true) {
             var nextOperation = sc.nextLine();
             try {
@@ -37,6 +39,10 @@ public class OperationsConsoleListener {
         }
     }
 
+    private void printAllAvailableOperations() {
+        processorMap.keySet().forEach(System.out::println );
+    }
+
     private void processNextOperation(ConsoleOperationType operation) {
         try {
             var processor = processorMap.get(operation);
@@ -45,5 +51,13 @@ public class OperationsConsoleListener {
         catch (Exception e) {
             System.out.printf("Error executing command %s, error = %s %n", operation, e.getMessage());
         }
+    }
+
+    public void start() {
+        System.out.println("Console listener started");
+    }
+
+    public void end() {
+        System.out.println("Console listener end listen");
     }
 }
