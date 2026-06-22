@@ -1,9 +1,11 @@
 package org.example;
 
 
+import org.example.account.Account;
 import org.example.account.AccountService;
+import org.example.user.User;
 import org.example.user.UserService;
-
+import java.util.List;
 import java.util.Scanner;
 
 public class OperationsConsoleListener {
@@ -21,18 +23,50 @@ public class OperationsConsoleListener {
 
     public void listenUpdates() {
         while(true) {
-            String nextOperation = sc.nextLine();
+            var operationType = listenNextOperation();
+            try {
+                processNextOperation(operationType);
+            }
+            catch (Exception e) {
+                System.out.printf("Error executing command %s, error = %s %n", operationType, e.getMessage());
+            }
+        }
+    }
 
-            if(nextOperation.equals("ACCOUNT_CREATE")) {
-                System.out.println("account created");
-            }
-            else if(nextOperation.equals("USER_CREATE")) {
-                System.out.println("user created");
+    private String listenNextOperation() {
+        return sc.nextLine();
+    }
+
+    private void processNextOperation(String operation) throws IllegalAccessException {
+        switch (operation) {
+            case "USER_CREATE" -> {
+
+                System.out.print("Enter login for you user: ");
+                String login = sc.nextLine();
+                User user = userService.createUser(login);
+                System.out.println("User created " + user.toString());
 
             }
-            else {
-                System.out.println("LOL");
+            case "SHOW_ALL_USERS" -> {
+
+                List<User> users = userService.getAllUsers();
+                System.out.println("List of all users: ");
+                users.forEach(System.out::println);
+
             }
+            case "ACCOUNT_CREATE" -> {
+
+                System.out.print("Enter the user id for which to create an account: ");
+                int userId = Integer.parseInt(sc.nextLine());
+                User user = userService.findUserById(userId).orElseThrow(() -> new IllegalArgumentException(
+                        "No such user with id: %s".formatted(userId)));
+                Account account = accountService.createAccount(user);
+                user.getAccountList().add(account);
+
+                System.out.printf("New account created with id: %s for user: %s%n", account.getId(), user.getLogin());
+
+            }
+            default -> System.out.println("LOL");
         }
     }
 }

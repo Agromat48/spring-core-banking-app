@@ -4,7 +4,6 @@ import org.example.account.AccountService;
 import org.example.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.Scanner;
 
 @Configuration

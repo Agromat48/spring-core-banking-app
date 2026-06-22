@@ -34,7 +34,7 @@ public class UserService {
         return newUser;
     }
 
-    public Optional<User> findUser(int id) {
+    public Optional<User> findUserById(int id) {
         return Optional.ofNullable(userMap.get(id));
     }
 

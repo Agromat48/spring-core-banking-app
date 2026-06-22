@@ -1,7 +1,6 @@
 package org.example.user;
 
 import org.example.account.Account;
-
 import java.util.List;
 
 public class User {
@@ -25,5 +24,14 @@ public class User {
 
     public List<Account> getAccountList() {
         return accountList;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", accountList=" + accountList +
+                '}';
     }
 }
