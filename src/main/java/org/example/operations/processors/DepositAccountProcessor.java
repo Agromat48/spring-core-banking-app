@@ -3,13 +3,16 @@ package org.example.operations.processors;
 import org.example.account.AccountService;
 import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class DepositAccountProcessor implements OperationCommandProcessor {
     private final Scanner scanner;
     private final AccountService accountService;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public DepositAccountProcessor(Scanner scanner, AccountService accountService) {
         this.scanner = scanner;
         this.accountService = accountService;

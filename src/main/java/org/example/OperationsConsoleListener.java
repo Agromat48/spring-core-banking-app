@@ -2,19 +2,28 @@ package org.example;
 
 import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
+@Component
 public class OperationsConsoleListener {
     private final Scanner sc;
     private final Map<ConsoleOperationType, OperationCommandProcessor> processorMap;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public OperationsConsoleListener(
             Scanner sc,
-            Map<ConsoleOperationType, OperationCommandProcessor> processorMap
+            List<OperationCommandProcessor> processorList
     ) {
         this.sc = sc;
-        this.processorMap = processorMap;
+        this.processorMap = processorList.stream()
+                .collect(Collectors.toMap(
+                                OperationCommandProcessor::getOperationType,
+                                processor -> processor));;
     }
 
     public void listenUpdates() {

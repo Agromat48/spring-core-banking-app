@@ -6,14 +6,17 @@ import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
 import org.example.user.User;
 import org.example.user.UserService;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class CreateAccountProcessor implements OperationCommandProcessor {
     private final Scanner scanner;
     private final AccountService accountService;
     private final UserService userService;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public CreateAccountProcessor(Scanner sc, AccountService accountService, UserService userService) {
         this.scanner = sc;
         this.accountService = accountService;

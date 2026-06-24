@@ -6,15 +6,18 @@ import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
 import org.example.user.User;
 import org.example.user.UserService;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class CloseAccountProcessor implements OperationCommandProcessor {
 
     private final Scanner scanner;
     private final AccountService accountService;
     private final UserService userService;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public CloseAccountProcessor(Scanner scanner, AccountService accountService, UserService userService) {
         this.scanner = scanner;
         this.accountService = accountService;
