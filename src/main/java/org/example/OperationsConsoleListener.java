@@ -23,12 +23,15 @@ public class OperationsConsoleListener {
         this.processorMap = processorList.stream()
                 .collect(Collectors.toMap(
                                 OperationCommandProcessor::getOperationType,
-                                processor -> processor));;
+                                processor -> processor));
     }
 
     public void listenUpdates() {
-        while(true) {
+        while(!Thread.currentThread().isInterrupted()) {
             var operationType = listenNextOperation();
+            if(operationType == null) {
+                return;
+            }
             processNextOperation(operationType);
         }
     }
@@ -37,7 +40,7 @@ public class OperationsConsoleListener {
         System.out.println("Please type next operation:");
         printAllAvailableOperations();
 
-        while(true) {
+        while(!Thread.currentThread().isInterrupted()) {
             var nextOperation = sc.nextLine();
             try {
                 return ConsoleOperationType.valueOf(nextOperation);
@@ -46,6 +49,7 @@ public class OperationsConsoleListener {
                 System.out.println("No such command found");
             }
         }
+        return null;
     }
 
     private void printAllAvailableOperations() {
