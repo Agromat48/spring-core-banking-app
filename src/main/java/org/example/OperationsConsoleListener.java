@@ -40,7 +40,9 @@ public class OperationsConsoleListener {
     }
 
     private void printAllAvailableOperations() {
-        processorMap.keySet().forEach(System.out::println );
+        processorMap.keySet().stream()
+                .sorted(Enum::compareTo)
+                .forEach(System.out::println);
     }
 
     private void processNextOperation(ConsoleOperationType operation) {

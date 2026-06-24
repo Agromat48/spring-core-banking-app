@@ -10,12 +10,12 @@ import org.example.user.UserService;
 import java.util.Scanner;
 
 public class CreateAccountProcessor implements OperationCommandProcessor {
-    private final Scanner sc;
+    private final Scanner scanner;
     private final AccountService accountService;
     private final UserService userService;
 
     public CreateAccountProcessor(Scanner sc, AccountService accountService, UserService userService) {
-        this.sc = sc;
+        this.scanner = sc;
         this.accountService = accountService;
         this.userService = userService;
     }
@@ -23,7 +23,7 @@ public class CreateAccountProcessor implements OperationCommandProcessor {
     @Override
     public void processOperation() {
         System.out.print("Enter the user id for which to create an account: ");
-        int userId = Integer.parseInt(sc.nextLine());
+        int userId = Integer.parseInt(scanner.nextLine());
         User user = userService.findUserById(userId).orElseThrow(() -> new IllegalArgumentException(
                 "No such user with id: %s".formatted(userId)));
         Account account = accountService.createAccount(user);
