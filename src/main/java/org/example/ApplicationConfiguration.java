@@ -37,7 +37,7 @@ public class ApplicationConfiguration {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean
-    public UserService UserService(AccountService accountService) {
+    public UserService userService(AccountService accountService) {
         return new UserService(accountService);
     }
 

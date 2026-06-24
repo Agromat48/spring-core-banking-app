@@ -48,4 +48,17 @@ public class AccountService {
 
         account.setMoneyAmount(account.getMoneyAmount() + moneyToDeposit);
     }
+
+    public void withdrawAccount(int accountId, int moneyToWithdraw) throws IllegalAccessException {
+        Account account = findAccountById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("No such account: id = %s"
+                        .formatted(accountId)));
+
+        if(account.getMoneyAmount() < moneyToWithdraw || moneyToWithdraw <= 0) {
+            throw new IllegalAccessException("Cannot to withdraw not positive amount: amount = %s"
+                    .formatted(moneyToWithdraw));
+        }
+
+        account.setMoneyAmount(account.getMoneyAmount() - moneyToWithdraw);
+    }
 }
