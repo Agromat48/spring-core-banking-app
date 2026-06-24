@@ -2,6 +2,7 @@ package org.example.account;
 
 import org.example.user.User;
 
+import java.time.temporal.TemporalAmount;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +11,12 @@ import java.util.Optional;
 public class AccountService {
     private final Map<Integer, Account> accountMap;
     private int idCounter;
+    private final int defaultAccountAmount;
+    private final double transferCommission;
 
-    public AccountService() {
+    public AccountService(int defaultAccountAmount, double transferCommission) {
+        this.defaultAccountAmount = defaultAccountAmount;
+        this.transferCommission = transferCommission;
         this.accountMap = new HashMap<>();
         this.idCounter = 0;
     }
@@ -19,7 +24,7 @@ public class AccountService {
     public Account createAccount(User user) {
         ++idCounter;
 
-        Account newAccount = new Account(idCounter, user.getId(), 0); //to do default
+        Account newAccount = new Account(idCounter, user.getId(), defaultAccountAmount);
         accountMap.put(newAccount.getId(), newAccount);
 
         return newAccount;
@@ -55,7 +60,7 @@ public class AccountService {
                         .formatted(accountId)));
 
         if(account.getMoneyAmount() < moneyToWithdraw || moneyToWithdraw <= 0) {
-            throw new IllegalAccessException("Cannot to withdraw not positive amount: amount = %s"
+            throw new IllegalAccessException("Cannot to withdraw amount: amount = %s"
                     .formatted(moneyToWithdraw));
         }
 
@@ -81,5 +86,27 @@ public class AccountService {
 
         accountMap.remove(accountId);
         return accountToRemove;
+    }
+
+    public void transfer(int fromAccountId, int toAccountId, int amountToTransfer) throws IllegalAccessException {
+        Account accountFrom = findAccountById(fromAccountId)
+                .orElseThrow(() -> new IllegalArgumentException("No such account: id = %s"
+                        .formatted(fromAccountId)));
+
+        Account  accountTo = findAccountById(toAccountId)
+                .orElseThrow(() -> new IllegalArgumentException("No such account: id = %s"
+                        .formatted(toAccountId)));
+
+        if(accountFrom.getMoneyAmount() < amountToTransfer || amountToTransfer <= 0) {
+            throw new IllegalAccessException("Cannot to transfer amount: amount = %s"
+                    .formatted(amountToTransfer));
+        }
+
+        int totalAmountToDeposit = accountTo.getUserId() != accountFrom.getUserId()
+                ? (int) (amountToTransfer - amountToTransfer * transferCommission)
+                : amountToTransfer;
+
+        accountFrom.setMoneyAmount(accountFrom.getMoneyAmount() - amountToTransfer);
+        accountTo.setMoneyAmount(accountTo.getMoneyAmount() + totalAmountToDeposit);
     }
 }

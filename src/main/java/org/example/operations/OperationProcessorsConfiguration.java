@@ -60,4 +60,12 @@ public class OperationProcessorsConfiguration {
     ) {
         return new CloseAccountProcessor(scanner, accountService, userService);
     }
+
+    @Bean
+    public TransferAccountProcessor transferAccountProcessor(
+            Scanner scanner,
+            AccountService accountService
+    ) {
+        return new TransferAccountProcessor(scanner, accountService);
+    }
 }
